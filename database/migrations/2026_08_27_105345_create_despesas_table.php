@@ -9,7 +9,6 @@ return new class extends Migration{
         Schema::create('despesas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->date('data');
             $table->string('descricao');
             $table->string('tipo');
             $table->decimal('valor', 10, 2);

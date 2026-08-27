@@ -1,3 +1,5 @@
+@use('App\Support\Moeda')
+
 <html>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -336,7 +338,7 @@
                     </div>
                 </div>
 
-                <div class="cartao-valor" id="saldo" data-valor="{{ euros($saldo) }}">{{ euros($saldo) }}</div>
+                <div class="cartao-valor" id="saldo" data-valor="{{ Moeda::euros($saldo) }}">{{ Moeda::euros($saldo) }}</div>
             </div>
 
             <div class="cartao">
@@ -354,7 +356,7 @@
                     </div>
                 </div>
 
-                <div class="cartao-valor" id="despesasMensais" data-valor="{{ euros($despesasMensais) }}">{{ euros($despesasMensais) }}</div>
+                <div class="cartao-valor" id="despesasMensais" data-valor="{{ Moeda::euros($despesasMensais) }}">{{ Moeda::euros($despesasMensais) }}</div>
             </div>
         </div>
 
@@ -386,9 +388,9 @@
                         <td>
                             <span class="etiqueta {{ config('despesas.classes.'.$despesa['tipo']) }}">{{ $despesa['tipo'] }}</span>
                         </td>
-                        <td class="valor">&minus;{{ euros($despesa['valor']) }}</td>
-                        <td class="numero">{{ euros($despesa['saldoAtual']) }}</td>
-                        <td class="saldo-pos">{{ euros($despesa['saldoPos']) }}</td>
+                        <td class="valor">&minus;{{ Moeda::euros($despesa['valor']) }}</td>
+                        <td class="numero">{{ Moeda::euros($despesa['saldoAtual']) }}</td>
+                        <td class="saldo-pos">{{ Moeda::euros($despesa['saldoPos']) }}</td>
                     </tr>
                 @empty
                     <tr>

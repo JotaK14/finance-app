@@ -7,15 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class MainController extends Controller
-{
+class MainController extends Controller{
     public function show(){
         $utilizador = Auth::user();
 
         $saldo = $utilizador->saldo;
 
         $despesas = $utilizador->despesas()
-            ->orderByDesc('data')
+            ->orderByDesc('created_at')
             ->orderByDesc('id')
             ->get()
             ->map(function ($despesa) use (&$saldo, $utilizador) {
@@ -23,7 +22,7 @@ class MainController extends Controller
                 $saldo += $despesa->valor;
 
                 return [
-                    'data' => $despesa->data->format('d/m'),
+                    'data' => $despesa->created_at->format('d/m'),
                     'descricao' => $despesa->descricao,
                     'tipo' => $despesa->tipo,
                     'valor' => $despesa->valor,
@@ -92,10 +91,7 @@ class MainController extends Controller
         DB::transaction(function () use ($dados) {
             $utilizador = Auth::user();
 
-            $utilizador->despesas()->create([
-                ...$dados,
-                'data' => now(),
-            ]);
+            $utilizador->despesas()->create($dados);
 
             $utilizador->decrement('saldo', $dados['valor']);
         });

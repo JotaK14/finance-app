@@ -114,10 +114,6 @@
                     alert("O nome de utilizador deve conter apenas letras e números.");
                     return;
                 }
-                if (username.match(/^[a-zA-ZÀ-ÿ]+$/) || username.match(/^[0-9]+$/)){
-                    alert("O nome de utilizador não pode conter apenas letras ou números.");
-                    return;
-                }
                 if (password !== password_confirmation){
                     alert("As palavras-passe não coincidem.");
                     return;
