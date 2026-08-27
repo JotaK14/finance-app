@@ -76,6 +76,7 @@
 
         <script>
             function goToLogin(){
+                limparCampos()
                 window.location.href = "{{ route('login') }}";
             }
 
@@ -138,7 +139,7 @@
                     limparCampos();
                     return;
                 }
-
+                
                 goToLogin();
             }
         </script>

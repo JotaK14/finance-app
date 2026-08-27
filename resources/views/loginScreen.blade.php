@@ -66,10 +66,12 @@
         
         <script>
             function goToRegister(){
+                limparCampos()
                 window.location.href = "{{ route('register') }}";
             }
             
             function goToMain(){
+                limparCampos()
                 window.location.href = "{{ route('main') }}";
             }
 
@@ -104,7 +106,7 @@
                     limparCampos();
                     return;
                 }
-
+                
                 goToMain();
             }
         </script>
