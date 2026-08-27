@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration{
     public function up(): void{
         Schema::create('users', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id();
             $table->string('name')->unique();
             $table->string('password');
             $table->string('phoneNumber', 9)->unique();
+            $table->decimal('saldo', 10, 2)->default(0);
+            $table->decimal('despesasMensais', 10, 2)->default(0);
+            $table->boolean('saldoDefinido')->default(false);
             $table->timestamps();
         });
 

@@ -45,7 +45,7 @@
             padding: 10px;
             width: 300px;
         }
-        
+
     </style>
     <body>
         <form class="login" style="margin-top: 15%;" method="POST" action="{{ route('login.store') }}" onsubmit="validarLogin(event)">
@@ -63,13 +63,13 @@
                 <button type="button" onclick="goToRegister()">Registar</button>
             </div>
         </form>
-        
+
         <script>
             function goToRegister(){
                 limparCampos()
                 window.location.href = "{{ route('register') }}";
             }
-            
+
             function goToMain(){
                 limparCampos()
                 window.location.href = "{{ route('main') }}";
@@ -78,6 +78,14 @@
             function limparCampos(){
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
+            }
+
+            function mensagemDeErro(dados){
+                if (dados.errors){
+                    return Object.values(dados.errors).flat().join("\n");
+                }
+
+                return dados.message ?? "Ocorreu um erro inesperado.";
             }
 
             async function validarLogin(event){
@@ -102,13 +110,13 @@
 
                 if (!resposta.ok){
                     const dados = await resposta.json();
-                    alert(dados.message);
+                    alert(mensagemDeErro(dados));
                     limparCampos();
                     return;
                 }
-                
+
                 goToMain();
             }
         </script>
-    </body>    
+    </body>
 </html>

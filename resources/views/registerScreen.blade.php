@@ -62,7 +62,7 @@
             @csrf
 
             <div class="title">Registo</div>
-            
+
             <input id="username" name="username" type="text" placeholder="Nome de utilizador">
             <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Número de telemóvel" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             <input id="password" name="password" type="password" placeholder="Palavra-passe">
@@ -85,6 +85,14 @@
                 document.getElementById("phoneNumber").value = "";
                 document.getElementById("password").value = "";
                 document.getElementById("confirmPassword").value = "";
+            }
+
+            function mensagemDeErro(dados){
+                if (dados.errors){
+                    return Object.values(dados.errors).flat().join("\n");
+                }
+
+                return dados.message ?? "Ocorreu um erro inesperado.";
             }
 
             async function validarRegisto(event){
@@ -135,11 +143,11 @@
 
                 if (!resposta.ok){
                     const dados = await resposta.json();
-                    alert(dados.message);
+                    alert(mensagemDeErro(dados));
                     limparCampos();
                     return;
                 }
-                
+
                 goToLogin();
             }
         </script>
