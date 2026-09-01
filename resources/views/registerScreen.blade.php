@@ -54,10 +54,10 @@
 
             <div class="title">Registo</div>
 
-            <input id="username" name="username" type="text" placeholder="Nome de utilizador">
-            <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Número de telemóvel" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input id="password" name="password" type="password" placeholder="Palavra-passe">
-            <input id="confirmPassword" name="password_confirmation" type="password" placeholder="Confirmar Palavra-passe">
+            <input id="username" name="username" type="text" placeholder="Nome de utilizador" autocomplete="off">
+            <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Número de telemóvel" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off">
+            <input id="password" name="password" type="password" placeholder="Palavra-passe" autocomplete="off">
+            <input id="confirmPassword" name="password_confirmation" type="password" placeholder="Confirmar Palavra-passe" autocomplete="off">
 
             <div class="buttons">
                 <button id="registerButton" type="submit">Registar</button>

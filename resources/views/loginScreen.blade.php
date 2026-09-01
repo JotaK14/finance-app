@@ -56,8 +56,8 @@
                 Login
             </div>
 
-            <input id="username" name="username" type="text" placeholder="Nome de utilizador">
-            <input id="password" name="password" type="password" placeholder="Palavra-passe">
+            <input id="username" name="username" type="text" placeholder="Nome de utilizador" autocomplete="off">
+            <input id="password" name="password" type="password" placeholder="Palavra-passe" autocomplete="off">
 
             <div class="buttons">
                 <button type="submit">Entrar</button>

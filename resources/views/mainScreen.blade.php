@@ -349,7 +349,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="cartao-valor" id="saldo" data-valor="{{ Moeda::euros($saldo) }}" style="margin-top: 12px;">{{ Moeda::euros($saldo) }}</div>
             </div>
 
@@ -369,6 +368,24 @@
                 </div>
 
                 <div class="cartao-valor" id="despesasMensais" data-valor="{{ Moeda::euros($despesasMensais) }}" style="margin-top: 12px;">{{ Moeda::euros($despesasMensais) }}</div>
+            </div>
+            
+            <div class="cartao">
+                <div class="cartao-topo">
+                    <div class="cartao-titulo">Salário Bruto</div>
+
+                    <div class="acoes">
+                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'salarioBruto')">
+                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
+                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
+                        </button>
+                        <button class="botao-icone" type="button" onclick="abrirPopup('salarioBruto', 'Salário Bruto', {{ $salarioBruto }})">
+                            <img src="{{ asset('icons/pencil.svg') }}" width="18" height="18">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cartao-valor" id="salarioBruto" data-valor="{{ Moeda::euros($salarioBruto) }}" style="margin-top: 12px;">{{ Moeda::euros($salarioBruto) }}</div>
             </div>
         </div>
 
@@ -393,7 +410,10 @@
                     <th>Tipo</th>
                     <th class="numero">Valor</th>
                     <th class="numero">Saldo atual</th>
-                    <th class="numero">Saldo pós despesas mensais</th>
+                    <th class="numero" style="display: flex; justify-content: flex-end; gap: 5px;">
+                        Saldo no final do mês
+                        <img src="{{ asset('icons/info.svg') }}" width="18" height="18" style="cursor: pointer;" title=" Saldo total + salário - despesas mensais ">
+                    </th>
                 </tr>
             </thead>
 
@@ -420,7 +440,7 @@
         </table>
 
         <x-popup id="popupValor" ao-guardar="guardarValor(event)">
-            <input class="popup-input" style="margin-top: 16px;" id="popupInput" type="text" inputmode="decimal" oninput="filtrarValor(this)" required>
+            <input class="popup-input" style="margin-top: 16px;" id="popupInput" type="text" inputmode="decimal" oninput="filtrarValor(this)" required autocomplete="off">
         </x-popup>
 
         <dialog id="popupConfirmar">
@@ -438,8 +458,8 @@
         </dialog>
 
         <x-popup id="popupGanho" titulo="Adicionar ganho" ao-guardar="guardarGanho(event)" botao="Adicionar">
-            <input class="popup-input" style="margin-top: 16px;" id="ganhoDescricao" type="text" maxlength="255" placeholder="Descrição" required>
-            <input class="popup-input" style="margin-top: 16px;" id="ganhoValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required>
+            <input class="popup-input" style="margin-top: 16px;" id="ganhoDescricao" type="text" maxlength="255" placeholder="Descrição" required autocomplete="off">
+            <input class="popup-input" style="margin-top: 16px;" id="ganhoValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required autocomplete="off">
         </x-popup>
 
         <x-popup id="popupDespesa" titulo="Retirar despesa" ao-guardar="guardarDespesa(event)" botao="Retirar">
@@ -449,8 +469,8 @@
                 @endforeach
             </select>
 
-            <input class="popup-input" style="margin-top: 16px;" id="despesaDescricao" type="text" maxlength="255" placeholder="Descrição" required>
-            <input class="popup-input" style="margin-top: 16px;" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required>
+            <input class="popup-input" style="margin-top: 16px;" id="despesaDescricao" type="text" maxlength="255" placeholder="Descrição" required autocomplete="off">
+            <input class="popup-input" style="margin-top: 16px;" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required autocomplete="off">
         </x-popup>
 
         <script>

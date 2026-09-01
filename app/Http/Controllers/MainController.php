@@ -28,7 +28,7 @@ class MainController extends Controller{
                     'classe' => config("movimentos.classes.{$movimento->tipo}"),
                     'valor' => $movimento->valor,
                     'saldoAtual' => $saldoAtual,
-                    'saldoPos' => $saldoAtual - $utilizador->despesasMensais,
+                    'saldoPos' => $saldoAtual - $utilizador->despesasMensais + $utilizador->salarioBruto,
                 ];
             });
 
@@ -36,17 +36,18 @@ class MainController extends Controller{
             'saldo' => $utilizador->saldo,
             'saldoDefinido' => $utilizador->saldoDefinido,
             'despesasMensais' => $utilizador->despesasMensais,
+            'salarioBruto' => $utilizador->salarioBruto,
             'movimentos' => $movimentos,
         ]);
     }
 
     public function atualizarValores(Request $request){
         $dados = $request->validate([
-            'campo' => ['required', 'in:saldo,despesasMensais'],
+            'campo' => ['required', 'in:saldo,despesasMensais,salarioBruto'],
             'valor' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
         ], [
             'campo.required' => 'Não foi indicado que valor alterar.',
-            'campo.in' => 'Só é possível alterar o saldo da conta ou as despesas mensais.',
+            'campo.in' => 'Só é possível alterar o saldo da conta, as despesas mensais ou o salário bruto.',
             'valor.required' => 'Indique um valor.',
             'valor.numeric' => 'O valor tem de ser um número.',
             'valor.min' => 'O valor não pode ser negativo.',

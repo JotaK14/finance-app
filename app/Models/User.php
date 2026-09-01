@@ -30,6 +30,7 @@ class User extends Authenticatable{
             'password' => 'hashed',
             'saldo' => 'decimal:2',
             'despesasMensais' => 'decimal:2',
+            'salarioBruto' => 'decimal:2',
             'saldoDefinido' => 'boolean',
         ];
     }
