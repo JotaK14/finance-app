@@ -12,6 +12,48 @@
             padding: 40px;
         }
 
+        dialog{
+            width: 320px;
+            padding: 24px;
+            border: 1px solid var(--border-button);
+            border-radius: 14px;
+            background-color: var(--preto);
+            color: var(--branco);
+        }
+
+        dialog::backdrop{
+            background-color: rgba(0, 0, 0, 0.67);
+        }
+
+        select.popup-input{
+            cursor: pointer;
+        }
+
+        table{
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th{
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-button);
+            color: var(--cinza);
+            font-size: 14px;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        td{
+            padding: 16px;
+            border-bottom: 1px solid var(--hover-button);
+            font-size: 15px;
+        }
+
+        [hidden]{
+            display: none;
+        }
+
         .header{
             display: flex;
             align-items: center;
@@ -19,7 +61,6 @@
         }
 
         .logout{
-            margin-left: auto;
             padding: 12px 20px;
             border: 1px solid var(--border-button);
             border-radius: 12px;
@@ -58,10 +99,9 @@
             font-weight: 600;
         }
 
-        .cartoes{
+        .valores{
             display: flex;
             gap: 60px;
-            margin-top: 40px;
         }
 
         .cartao{
@@ -84,7 +124,6 @@
         .cartao-valor{
             font-size: 38px;
             font-weight: 600;
-            margin-top: 12px;
         }
 
         .acoes{
@@ -114,18 +153,7 @@
             cursor: not-allowed;
         }
 
-        dialog{
-            width: 320px;
-            padding: 24px;
-            border: 1px solid var(--border-button);
-            border-radius: 14px;
-            background-color: var(--preto);
-            color: var(--branco);
-        }
-
-        dialog::backdrop{
-            background-color: rgba(0, 0, 0, 0.67);
-        }
+        
 
         .popup-titulo{
             font-size: 18px;
@@ -135,7 +163,6 @@
         .popup-input{
             box-sizing: border-box;
             width: 100%;
-            margin-top: 16px;
             padding: 10px;
             border: 1px solid var(--border-button);
             border-radius: 8px;
@@ -145,12 +172,7 @@
             font-size: 16px;
         }
 
-        select.popup-input{
-            cursor: pointer;
-        }
-
         .popup-texto{
-            margin-top: 14px;
             font-size: 15px;
             line-height: 1.5;
             color: var(--cinza);
@@ -164,7 +186,6 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            margin-top: 20px;
         }
 
         .popup-botoes button{
@@ -189,18 +210,13 @@
             opacity: 0.85;
         }
 
-        [hidden]{
-            display: none;
-        }
-
-        .despesas-topo{
+        .movimentos-topo{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 60px;
         }
 
-        .despesas-titulo{
+        .movimentos-titulo{
             font-size: 22px;
             font-weight: 600;
         }
@@ -223,27 +239,6 @@
             background-color: var(--hover-button);
         }
 
-        table{
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        th{
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-button);
-            color: var(--cinza);
-            font-size: 14px;
-            font-weight: 400;
-            text-align: left;
-        }
-
-        td{
-            padding: 16px;
-            border-bottom: 1px solid var(--hover-button);
-            font-size: 15px;
-        }
-
         .data{
             color: var(--cinza);
         }
@@ -256,8 +251,18 @@
             text-align: right;
         }
 
-        .valor{
+        .movimentos-botoes{
+            display: flex;
+            gap: 10px;
+        }
+
+        .valor-negativo{
             color: var(--vermelho);
+            text-align: right;
+        }
+
+        .valor-positivo{
+            color: var(--verde);
             text-align: right;
         }
 
@@ -299,11 +304,18 @@
             color: var(--roxo-escuro);
         }
 
-        .lazer{
+        .ganho{
             font-weight: 600;
             border: 1px solid var(--verde-escuro);
             background-color: var(--verde);
             color: var(--verde-escuro);
+        }
+
+        .lazer{
+            font-weight: 600;
+            border: 1px solid var(--castanho-escuro);
+            background-color: var(--castanho);
+            color: var(--castanho-escuro);
         }
     </style>
     <body>
@@ -315,12 +327,12 @@
                 <div class="nome">{{ Auth::user()->name }}</div>
             </div>
 
-            <button class="logout" type="button" onclick="window.location.href = '{{ route('login') }}'">
+            <button class="logout" style="margin-left: auto;" type="button" onclick="window.location.href = '{{ route('login') }}'">
                 <img src="{{ asset('icons/logout.svg') }}" width="18" height="18">
             </button>
         </div>
 
-        <div class="cartoes">
+        <div class="valores" style="margin-top: 40px;">
             <div class="cartao">
                 <div class="cartao-topo">
                     <div class="cartao-titulo">Saldo da conta</div>
@@ -338,7 +350,7 @@
                     </div>
                 </div>
 
-                <div class="cartao-valor" id="saldo" data-valor="{{ Moeda::euros($saldo) }}">{{ Moeda::euros($saldo) }}</div>
+                <div class="cartao-valor" id="saldo" data-valor="{{ Moeda::euros($saldo) }}" style="margin-top: 12px;">{{ Moeda::euros($saldo) }}</div>
             </div>
 
             <div class="cartao">
@@ -356,16 +368,21 @@
                     </div>
                 </div>
 
-                <div class="cartao-valor" id="despesasMensais" data-valor="{{ Moeda::euros($despesasMensais) }}">{{ Moeda::euros($despesasMensais) }}</div>
+                <div class="cartao-valor" id="despesasMensais" data-valor="{{ Moeda::euros($despesasMensais) }}" style="margin-top: 12px;">{{ Moeda::euros($despesasMensais) }}</div>
             </div>
         </div>
 
-        <div class="despesas-topo">
-            <div class="despesas-titulo">Despesas</div>
+        <div class="movimentos-topo" style="margin-top: 60px;">
+            <div class="movimentos-titulo">Movimentos</div>
 
-            <button class="botao-adicionar" type="button" onclick="abrirPopupDespesa()">
-                <img src="{{ asset('icons/plus.svg') }}" width="16" height="16"> Adicionar despesa
-            </button>
+            <div class="movimentos-botoes">
+                <button class="botao-adicionar" type="button" onclick="abrirPopupGanho()">
+                    Adicionar Ganho
+                </button>
+                <button class="botao-adicionar" type="button" onclick="abrirPopupDespesa()">
+                    Adicionar Despesa
+                </button>
+            </div>
         </div>
 
         <table>
@@ -381,113 +398,128 @@
             </thead>
 
             <tbody>
-                @forelse ($despesas as $despesa)
+                @forelse ($movimentos as $movimento)
                     <tr>
-                        <td class="data">{{ $despesa['data'] }}</td>
-                        <td class="descricao">{{ $despesa['descricao'] }}</td>
+                        <td class="data">{{ $movimento['data'] }}</td>
+                        <td class="descricao">{{ $movimento['descricao'] }}</td>
                         <td>
-                            <span class="etiqueta {{ config('despesas.classes.'.$despesa['tipo']) }}">{{ $despesa['tipo'] }}</span>
+                            <span class="etiqueta {{ $movimento['classe'] }}">{{ $movimento['tipo'] }}</span>
                         </td>
-                        <td class="valor">&minus;{{ Moeda::euros($despesa['valor']) }}</td>
-                        <td class="numero">{{ Moeda::euros($despesa['saldoAtual']) }}</td>
-                        <td class="saldo-pos">{{ Moeda::euros($despesa['saldoPos']) }}</td>
+                        <td class="{{ $movimento['valor'] < 0 ? 'valor-negativo' : 'valor-positivo' }}">
+                            {{ $movimento['valor'] > 0 ? '+' : '' }}{{ Moeda::euros($movimento['valor']) }}
+                        </td>
+                        <td class="numero">{{ Moeda::euros($movimento['saldoAtual']) }}</td>
+                        <td class="saldo-pos">{{ Moeda::euros($movimento['saldoPos']) }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="vazio" colspan="6">Ainda não existem despesas registadas.</td>
+                        <td class="vazio" colspan="6">Ainda não existem movimentos registados.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
 
-        <dialog id="popupValor">
-            <form onsubmit="guardarValor(event)">
-                <div class="popup-titulo" id="popupTitulo"></div>
-
-                <input class="popup-input" id="popupInput" type="text" inputmode="decimal" oninput="filtrarValor(this)" required>
-
-                <div class="popup-botoes">
-                    <button type="button" onclick="document.getElementById('popupValor').close()">Cancelar</button>
-                    <button type="submit">Guardar</button>
-                </div>
-            </form>
-        </dialog>
+        <x-popup id="popupValor" ao-guardar="guardarValor(event)">
+            <input class="popup-input" style="margin-top: 16px;" id="popupInput" type="text" inputmode="decimal" oninput="filtrarValor(this)" required>
+        </x-popup>
 
         <dialog id="popupConfirmar">
             <div class="popup-titulo">Confirmar saldo</div>
 
-            <div class="popup-texto">
+            <div class="popup-texto" style="margin-top: 14px;">
                 Vai definir o saldo da conta como <strong id="confirmarValor"></strong>.
                 Este valor só pode ser definido uma vez, e depois não é possível alterá-lo.
             </div>
 
-            <div class="popup-botoes">
-                <button type="button" onclick="document.getElementById('popupConfirmar').close()">Rever</button>
+            <div class="popup-botoes" style="margin-top: 20px;">
+                <button type="button" onclick="fechar('popupConfirmar')">Rever</button>
                 <button type="button" onclick="confirmarSaldo()">Confirmar</button>
             </div>
         </dialog>
 
-        <dialog id="popupDespesa">
-            <form onsubmit="guardarDespesa(event)">
-                <div class="popup-titulo">Adicionar despesa</div>
+        <x-popup id="popupGanho" titulo="Adicionar ganho" ao-guardar="guardarGanho(event)" botao="Adicionar">
+            <input class="popup-input" style="margin-top: 16px;" id="ganhoDescricao" type="text" maxlength="255" placeholder="Descrição" required>
+            <input class="popup-input" style="margin-top: 16px;" id="ganhoValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required>
+        </x-popup>
 
-                <select class="popup-input" id="despesaTipo" required>
-                    @foreach (array_keys(config('despesas.classes')) as $tipo)
-                        <option value="{{ $tipo }}">{{ $tipo }}</option>
-                    @endforeach
-                </select>
+        <x-popup id="popupDespesa" titulo="Retirar despesa" ao-guardar="guardarDespesa(event)" botao="Retirar">
+            <select class="popup-input" style="margin-top: 16px;" id="despesaTipo" required>
+                @foreach (config('movimentos.tiposDespesa') as $tipo)
+                    <option value="{{ $tipo }}">{{ $tipo }}</option>
+                @endforeach
+            </select>
 
-                <input class="popup-input" id="despesaDescricao" type="text" maxlength="255" placeholder="Descrição" required>
-                <input class="popup-input" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required>
-
-                <div class="popup-botoes">
-                    <button type="button" onclick="document.getElementById('popupDespesa').close()">Cancelar</button>
-                    <button type="submit">Adicionar</button>
-                </div>
-            </form>
-        </dialog>
+            <input class="popup-input" style="margin-top: 16px;" id="despesaDescricao" type="text" maxlength="255" placeholder="Descrição" required>
+            <input class="popup-input" style="margin-top: 16px;" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required>
+        </x-popup>
 
         <script>
             let campoAtual = null;
 
+            function abrir(id){
+                document.getElementById(id).showModal();
+            }
+
+            function fechar(id){
+                document.getElementById(id).close();
+            }
+
+            async function enviar(url, metodo, corpo){
+                const resposta = await fetch(url, {
+                    method: metodo,
+                    headers:{
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify(corpo),
+                });
+
+                if (!resposta.ok){
+                    alert(mensagemDeErro(await resposta.json()));
+                    return;
+                }
+
+                window.location.reload();
+            }
+
             function abrirPopup(campo, titulo, valor){
                 campoAtual = campo;
-                document.getElementById("popupTitulo").textContent = titulo;
+                document.getElementById("popupValorTitulo").textContent = titulo;
                 document.getElementById("popupInput").value = String(valor).replace(".", ",");
-                document.getElementById("popupValor").showModal();
+                abrir("popupValor");
+            }
+
+            function abrirPopupGanho(){
+                document.getElementById("ganhoDescricao").value = "";
+                document.getElementById("ganhoValor").value = "";
+                abrir("popupGanho");
             }
 
             function abrirPopupDespesa(){
                 document.getElementById("despesaTipo").selectedIndex = 0;
                 document.getElementById("despesaDescricao").value = "";
                 document.getElementById("despesaValor").value = "";
-                document.getElementById("popupDespesa").showModal();
+                abrir("popupDespesa");
             }
 
-            async function guardarDespesa(event){
+            function guardarGanho(event){
                 event.preventDefault();
 
-                const resposta = await fetch("{{ route('main.despesas') }}", {
-                    method: "POST",
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        tipo: document.getElementById("despesaTipo").value,
-                        descricao: document.getElementById("despesaDescricao").value,
-                        valor: document.getElementById("despesaValor").value.replace(",", "."),
-                    }),
+                enviar("{{ route('main.ganhos') }}", "POST", {
+                    descricao: document.getElementById("ganhoDescricao").value,
+                    valor: document.getElementById("ganhoValor").value.replace(",", "."),
                 });
+            }
 
-                if (!resposta.ok){
-                    const dados = await resposta.json();
-                    alert(mensagemDeErro(dados));
-                    return;
-                }
+            function guardarDespesa(event){
+                event.preventDefault();
 
-                window.location.reload();
+                enviar("{{ route('main.despesas') }}", "POST", {
+                    tipo: document.getElementById("despesaTipo").value,
+                    descricao: document.getElementById("despesaDescricao").value,
+                    valor: document.getElementById("despesaValor").value.replace(",", "."),
+                });
             }
 
             function filtrarValor(input){
@@ -520,7 +552,7 @@
                 if (campoAtual === "saldo"){
                     document.getElementById("confirmarValor").textContent =
                         formatarEuros(document.getElementById("popupInput").value);
-                    document.getElementById("popupConfirmar").showModal();
+                    abrir("popupConfirmar");
                     return;
                 }
 
@@ -528,31 +560,15 @@
             }
 
             function confirmarSaldo(){
-                document.getElementById("popupConfirmar").close();
+                fechar("popupConfirmar");
                 enviarValor();
             }
 
-            async function enviarValor(){
-                const resposta = await fetch("{{ route('main.valores') }}", {
-                    method: "PATCH",
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        campo: campoAtual,
-                        valor: document.getElementById("popupInput").value.replace(",", "."),
-                    }),
+            function enviarValor(){
+                enviar("{{ route('main.valores') }}", "PATCH", {
+                    campo: campoAtual,
+                    valor: document.getElementById("popupInput").value.replace(",", "."),
                 });
-
-                if (!resposta.ok){
-                    const dados = await resposta.json();
-                    alert(mensagemDeErro(dados));
-                    return;
-                }
-
-                window.location.reload();
             }
 
             function alternarValor(botao, id){

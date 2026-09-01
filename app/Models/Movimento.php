@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Despesa extends Model{
+class Movimento extends Model{
     protected $fillable = ['descricao', 'tipo', 'valor'];
 
     protected function casts(): array{

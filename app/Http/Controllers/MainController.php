@@ -13,19 +13,20 @@ class MainController extends Controller{
 
         $saldo = $utilizador->saldo;
 
-        $despesas = $utilizador->despesas()
+        $movimentos = $utilizador->movimentos()
             ->orderByDesc('created_at')
             ->orderByDesc('id')
             ->get()
-            ->map(function ($despesa) use (&$saldo, $utilizador) {
+            ->map(function ($movimento) use (&$saldo, $utilizador) {
                 $saldoAtual = $saldo;
-                $saldo += $despesa->valor;
+                $saldo -= $movimento->valor;
 
                 return [
-                    'data' => $despesa->created_at->format('d/m'),
-                    'descricao' => $despesa->descricao,
-                    'tipo' => $despesa->tipo,
-                    'valor' => $despesa->valor,
+                    'data' => $movimento->created_at->format('d/m'),
+                    'descricao' => $movimento->descricao,
+                    'tipo' => $movimento->tipo,
+                    'classe' => config("movimentos.classes.{$movimento->tipo}"),
+                    'valor' => $movimento->valor,
                     'saldoAtual' => $saldoAtual,
                     'saldoPos' => $saldoAtual - $utilizador->despesasMensais,
                 ];
@@ -35,7 +36,7 @@ class MainController extends Controller{
             'saldo' => $utilizador->saldo,
             'saldoDefinido' => $utilizador->saldoDefinido,
             'despesasMensais' => $utilizador->despesasMensais,
-            'despesas' => $despesas,
+            'movimentos' => $movimentos,
         ]);
     }
 
@@ -71,10 +72,31 @@ class MainController extends Controller{
         return response()->json(['ok' => true]);
     }
 
+    public function guardarGanho(Request $request){
+        $dados = $request->validate([
+            'descricao' => ['required', 'string', 'max:255'],
+            'valor' => ['required', 'numeric', 'min:0.01', 'max:99999999.99'],
+        ], [
+            'descricao.required' => 'Escreva uma descrição para o ganho.',
+            'descricao.max' => 'A descrição não pode ter mais de 255 caracteres.',
+            'valor.required' => 'Indique o valor do ganho.',
+            'valor.numeric' => 'O valor tem de ser um número.',
+            'valor.min' => 'O valor do ganho tem de ser maior do que zero.',
+            'valor.max' => 'O valor é demasiado alto.',
+        ]);
+
+        $this->registar([
+            'descricao' => $dados['descricao'],
+            'tipo' => config('movimentos.tipoGanho'),
+            'valor' => $dados['valor'],
+        ]);
+
+        return response()->json(['ok' => true]);
+    }
 
     public function guardarDespesa(Request $request){
         $dados = $request->validate([
-            'tipo' => ['required', Rule::in(array_keys(config('despesas.classes')))],
+            'tipo' => ['required', Rule::in(config('movimentos.tiposDespesa'))],
             'descricao' => ['required', 'string', 'max:255'],
             'valor' => ['required', 'numeric', 'min:0.01', 'max:99999999.99'],
         ], [
@@ -88,14 +110,20 @@ class MainController extends Controller{
             'valor.max' => 'O valor é demasiado alto.',
         ]);
 
-        DB::transaction(function () use ($dados) {
-            $utilizador = Auth::user();
-
-            $utilizador->despesas()->create($dados);
-
-            $utilizador->decrement('saldo', $dados['valor']);
-        });
+        $this->registar([
+            'descricao' => $dados['descricao'],
+            'tipo' => $dados['tipo'],
+            'valor' => -$dados['valor'],
+        ]);
 
         return response()->json(['ok' => true]);
+    }
+
+    private function registar(array $movimento){
+        DB::transaction(function () use ($movimento) {
+            $utilizador = Auth::user();
+            $utilizador->movimentos()->create($movimento);
+            $utilizador->increment('saldo', $movimento['valor']);
+        });
     }
 }

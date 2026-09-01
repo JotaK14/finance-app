@@ -13,8 +13,8 @@ class User extends Authenticatable{
     protected $fillable = ['name', 'password', 'phoneNumber'];
     protected $hidden = ['password'];
 
-    public function despesas(): HasMany{
-        return $this->hasMany(Despesa::class);
+    public function movimentos(): HasMany{
+        return $this->hasMany(Movimento::class);
     }
 
     protected function iniciais(): Attribute{
