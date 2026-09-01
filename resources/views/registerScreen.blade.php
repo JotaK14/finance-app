@@ -1,8 +1,9 @@
+<link rel="stylesheet" href="{{ asset('css/colors.css') }}">
 <html>
     <style>
         body{
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--preto);
+            color: var(--branco);
             font-family: Roboto, sans-serif;
         }
 
@@ -19,8 +20,8 @@
             border-radius: 5px;
             border: none;
             width: 120px;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--branco);
+            color: var(--preto);
             font-weight: 400;
             cursor: pointer;
         }
@@ -44,16 +45,6 @@
             justify-content: space-around;
             padding: 10px;
             width: 300px;
-        }
-
-        .erros{
-            width: 300px;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #3d0000;
-            color: #ffb4b4;
-            font-size: 14px;
         }
 
     </style>

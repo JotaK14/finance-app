@@ -1,12 +1,12 @@
 @use('App\Support\Moeda')
-
+<link rel="stylesheet" href="{{ asset('css/colors.css') }}">
 <html>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    
     <style>
         body{
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--preto);
+            color: var(--branco);
             font-family: Roboto, sans-serif;
             margin: 0;
             padding: 40px;
@@ -21,17 +21,17 @@
         .logout{
             margin-left: auto;
             padding: 12px 20px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 12px;
             background-color: transparent;
-            color: #ffffff;
+            color: var(--branco);
             font-family: inherit;
             font-size: 15px;
             cursor: pointer;
         }
 
         .logout:hover{
-            background-color: #1c1c1c;
+            background-color: var(--hover-button);
         }
 
         .avatar{
@@ -41,8 +41,8 @@
             width: 54px;
             height: 54px;
             border-radius: 50%;
-            background-color: #1e3a8a;
-            color: #ffffff;
+            background-color: var(--branco);
+            color: var(--preto);
             font-size: 18px;
             font-weight: 600;
         }
@@ -50,7 +50,7 @@
         .boas-vindas{
             font-size: 15px;
             font-weight: 400;
-            color: #9ca3af;
+            color: var(--cinza);
         }
 
         .nome{
@@ -78,7 +78,7 @@
 
         .cartao-titulo{
             font-size: 15px;
-            color: #9ca3af;
+            color: var(--cinza);
         }
 
         .cartao-valor{
@@ -98,15 +98,15 @@
             align-items: center;
             width: 38px;
             height: 38px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 10px;
             background-color: transparent;
-            color: #ffffff;
+            color: var(--branco);
             cursor: pointer;
         }
 
         .botao-icone:hover:not(:disabled){
-            background-color: #1c1c1c;
+            background-color: var(--hover-button);
         }
 
         .botao-icone:disabled{
@@ -117,14 +117,14 @@
         dialog{
             width: 320px;
             padding: 24px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 14px;
-            background-color: #101010;
-            color: #ffffff;
+            background-color: var(--preto);
+            color: var(--branco);
         }
 
         dialog::backdrop{
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.67);
         }
 
         .popup-titulo{
@@ -137,10 +137,10 @@
             width: 100%;
             margin-top: 16px;
             padding: 10px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 8px;
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--preto);
+            color: var(--branco);
             font-family: inherit;
             font-size: 16px;
         }
@@ -153,11 +153,11 @@
             margin-top: 14px;
             font-size: 15px;
             line-height: 1.5;
-            color: #9ca3af;
+            color: var(--cinza);
         }
 
         .popup-texto strong{
-            color: #ffffff;
+            color: var(--branco);
         }
 
         .popup-botoes{
@@ -169,10 +169,10 @@
 
         .popup-botoes button{
             padding: 10px 18px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 10px;
             background-color: transparent;
-            color: #ffffff;
+            color: var(--branco);
             font-family: inherit;
             font-size: 14px;
             cursor: pointer;
@@ -180,9 +180,9 @@
 
         .popup-botoes button[type="submit"],
         .popup-botoes button[onclick="confirmarSaldo()"]{
-            border-color: #ffffff;
-            background-color: #ffffff;
-            color: #000000;
+            border-color: var(--branco);
+            background-color: var(--branco);
+            color: var(--preto);
         }
 
         .popup-botoes button:hover{
@@ -210,17 +210,17 @@
             align-items: center;
             gap: 8px;
             padding: 12px 20px;
-            border: 1px solid #2f2f2f;
+            border: 1px solid var(--border-button);
             border-radius: 12px;
             background-color: transparent;
-            color: #ffffff;
+            color: var(--branco);
             font-size: 15px;
             font-family: inherit;
             cursor: pointer;
         }
 
         .botao-adicionar:hover{
-            background-color: #1c1c1c;
+            background-color: var(--hover-button);
         }
 
         table{
@@ -231,8 +231,8 @@
 
         th{
             padding: 14px 16px;
-            border-bottom: 1px solid #2f2f2f;
-            color: #9ca3af;
+            border-bottom: 1px solid var(--border-button);
+            color: var(--cinza);
             font-size: 14px;
             font-weight: 400;
             text-align: left;
@@ -240,12 +240,12 @@
 
         td{
             padding: 16px;
-            border-bottom: 1px solid #1c1c1c;
+            border-bottom: 1px solid var(--hover-button);
             font-size: 15px;
         }
 
         .data{
-            color: #9ca3af;
+            color: var(--cinza);
         }
 
         .descricao{
@@ -257,7 +257,7 @@
         }
 
         .valor{
-            color: #f87171;
+            color: var(--vermelho);
             text-align: right;
         }
 
@@ -267,7 +267,7 @@
         }
 
         .vazio{
-            color: #9ca3af;
+            color: var(--cinza);
             text-align: center;
         }
 
@@ -280,30 +280,30 @@
 
         .alimentacao{
             font-weight: 600;
-            border: 1px solid #78350f;
-            background-color: #fcd34d;
-            color: #78350f;
+            border: 1px solid var(--laranja-escuro);
+            background-color: var(--laranja);
+            color: var(--laranja-escuro);
         }
 
         .transporte{
             font-weight: 600;
-            border: 1px solid #1e40af;
-            background-color: #bfdbfe;
-            color: #1e40af;
+            border: 1px solid var(--azul-escuro);
+            background-color: var(--azul);
+            color: var(--azul-escuro);
         }
 
-        .habitacao{
+        .habitacao {
             font-weight: 600;
-            border: 1px solid #7f1d1d;
-            background-color: #fca5a5;
-            color: #7f1d1d;
+            border: 1px solid var(--roxo-escuro);
+            background-color: var(--roxo);
+            color: var(--roxo-escuro);
         }
 
         .lazer{
             font-weight: 600;
-            border: 1px solid #14532d;
-            background-color: #86efac;
-            color: #14532d;
+            border: 1px solid var(--verde-escuro);
+            background-color: var(--verde);
+            color: var(--verde-escuro);
         }
     </style>
     <body>

@@ -1,8 +1,9 @@
+<link rel="stylesheet" href="{{ asset('css/colors.css') }}">
 <html>
     <style>
         body{
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--preto);
+            color: var(--branco);
             font-family: Roboto, sans-serif;
             letter-spacing: 5px;
         }
