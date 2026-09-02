@@ -47,15 +47,10 @@ class MainController extends Controller{
 
     public function atualizarValores(Request $request){
         $dados = $request->validate([
-            'campo' => ['required', 'in:saldo, despesasMensais, salarioBruto, salarioLiquido'],
-            'valor' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
+            'campo' => ['required', Rule::in(['saldo', 'despesasMensais', 'salarioBruto'])],
+            'valor' => ['required', 'numeric'],
         ], [
-            'campo.required' => 'Não foi indicado que valor alterar.',
-            'campo.in' => 'Só é possível alterar o saldo da conta, as despesas mensais, o salário bruto ou o salário líquido.',
-            'valor.required' => 'Indique um valor.',
             'valor.numeric' => 'O valor tem de ser um número.',
-            'valor.min' => 'O valor não pode ser negativo.',
-            'valor.max' => 'O valor é demasiado alto.',
         ]);
 
         $utilizador = Auth::user();
@@ -85,11 +80,9 @@ class MainController extends Controller{
     public function guardarGanho(Request $request){
         $dados = $request->validate([
             'descricao' => ['required', 'string', 'max:255'],
-            'valor' => ['required', 'numeric', 'min:0.01', 'max:99999999.99'],
+            'valor' => ['required', 'numeric', 'min:0.01'],
         ], [
             'descricao.required' => 'Escreva uma descrição para o ganho.',
-            'descricao.max' => 'A descrição não pode ter mais de 255 caracteres.',
-            'valor.required' => 'Indique o valor do ganho.',
             'valor.numeric' => 'O valor tem de ser um número.',
             'valor.min' => 'O valor do ganho tem de ser maior do que zero.',
             'valor.max' => 'O valor é demasiado alto.',
@@ -110,11 +103,7 @@ class MainController extends Controller{
             'descricao' => ['required', 'string', 'max:255'],
             'valor' => ['required', 'numeric', 'min:0.01', 'max:99999999.99'],
         ], [
-            'tipo.required' => 'Escolha o tipo da despesa.',
-            'tipo.in' => 'Esse tipo de despesa não existe.',
             'descricao.required' => 'Escreva uma descrição para a despesa.',
-            'descricao.max' => 'A descrição não pode ter mais de 255 caracteres.',
-            'valor.required' => 'Indique o valor da despesa.',
             'valor.numeric' => 'O valor tem de ser um número.',
             'valor.min' => 'O valor da despesa tem de ser maior do que zero.',
             'valor.max' => 'O valor é demasiado alto.',
@@ -129,7 +118,7 @@ class MainController extends Controller{
         return response()->json(['ok' => true]);
     }
 
-        public function guardarIrs(Request $request){
+    public function guardarIrs(Request $request){
         $utilizador = Auth::user();
 
         $dados = $request->validate([
@@ -140,13 +129,6 @@ class MainController extends Controller{
             'conjugeEmAtividade' => ['required', 'boolean'],
             'deficientesArmadas' => ['required', 'boolean'],
             'dependentes' => ['required', 'integer', 'min:0'],
-        ], [
-            'residencia.required' => 'Escolha a residência.',
-            'residencia.in' => 'A residência tem de ser Continente, Açores ou Madeira.',
-            'dependentes.required' => 'Indique o número de dependentes.',
-            'dependentes.integer' => 'O número de dependentes tem de ser um número inteiro.',
-            'dependentes.min' => 'O número de dependentes não pode ser negativo.',
-            'dependentes.max' => 'O número de dependentes é demasiado alto.',
         ]);
 
         if (! in_array($dados['residencia'], config('irs.residenciasDisponiveis'), true)) {

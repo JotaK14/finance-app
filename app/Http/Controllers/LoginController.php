@@ -16,9 +16,7 @@ class LoginController extends Controller{
             'password' => ['required', 'string'],
         ], [
             'username.required' => 'Indique o nome de utilizador.',
-            'username.string' => 'O nome de utilizador é inválido.',
             'password.required' => 'Indique a palavra-passe.',
-            'password.string' => 'A palavra-passe é inválida.',
         ]);
 
         if (! Auth::attempt(['name' => $userInfo['username'], 'password' => $userInfo['password']])) {
