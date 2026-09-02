@@ -14,6 +14,7 @@ return new class extends Migration{
             $table->decimal('saldo', 10, 2)->default(0);
             $table->decimal('despesasMensais', 10, 2)->default(0);
             $table->decimal('salarioBruto', 10, 2)->default(0);
+            $table->decimal('salarioLiquido', 10, 2)->default(0);
             $table->boolean('saldoDefinido')->default(false);
             $table->timestamps();
         });

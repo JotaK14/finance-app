@@ -13,8 +13,4 @@ class Movimento extends Model{
             'valor' => 'decimal:2',
         ];
     }
-
-    public function user(): BelongsTo{
-        return $this->belongsTo(User::class);
-    }
 }

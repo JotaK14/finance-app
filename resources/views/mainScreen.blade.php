@@ -54,10 +54,13 @@
             display: none;
         }
 
+        strong{
+            color: var(--branco);
+        }
+
         .header{
             display: flex;
             align-items: center;
-            gap: 16px;
         }
 
         .logout{
@@ -73,19 +76,6 @@
 
         .logout:hover{
             background-color: var(--hover-button);
-        }
-
-        .avatar{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            background-color: var(--branco);
-            color: var(--preto);
-            font-size: 18px;
-            font-weight: 600;
         }
 
         .boas-vindas{
@@ -178,8 +168,60 @@
             color: var(--cinza);
         }
 
-        .popup-texto strong{
-            color: var(--branco);
+        .irs-bruto{
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid var(--border-button);
+            border-radius: 8px;
+        }
+
+        .interruptor{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .interruptor input{
+            position: none;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .interruptor-calha{
+            position: relative;
+            width: 42px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: var(--border-button);
+        }
+
+        .interruptor-calha::after{
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--branco);
+            transition: transform 0.15s;
+        }
+
+        .interruptor input:checked + .interruptor-calha{
+            background-color: var(--verde-escuro);
+        }
+
+        .interruptor input:checked + .interruptor-calha::after{
+            transform: translateX(18px);
+        }
+
+        .interruptor input:focus-visible + .interruptor-calha{
+            outline: 2px solid var(--branco);
+            outline-offset: 2px;
         }
 
         .popup-botoes{
@@ -320,8 +362,6 @@
     </style>
     <body>
         <div class="header">
-            <div class="avatar">{{ Auth::user()->iniciais }}</div>
-
             <div>
                 <div class="boas-vindas">Bem-vindo de volta</div>
                 <div class="nome">{{ Auth::user()->name }}</div>
@@ -386,6 +426,26 @@
                 </div>
 
                 <div class="cartao-valor" id="salarioBruto" data-valor="{{ Moeda::euros($salarioBruto) }}" style="margin-top: 12px;">{{ Moeda::euros($salarioBruto) }}</div>
+            </div>
+
+            <div class="cartao">
+                <div class="cartao-topo">
+                    <div class="cartao-titulo">Salário Líquido</div>
+
+                    <div class="acoes">
+                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'salarioLiquido')">
+                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
+                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
+                        </button>
+                        <button class="botao-icone" type="button" @disabled($salarioBruto <= 0)
+                                onclick="abrirPopupIrs()"
+                                title="{{ $salarioBruto <= 0 }}">
+                            <img src="{{ asset('icons/pencil.svg') }}" width="18" height="18">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cartao-valor" id="salarioLiquido" data-valor="{{ Moeda::euros($salarioLiquido) }}" style="margin-top: 12px;">{{ Moeda::euros($salarioLiquido) }}</div>
             </div>
         </div>
 
@@ -473,6 +533,37 @@
             <input class="popup-input" style="margin-top: 16px;" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required autocomplete="off">
         </x-popup>
 
+        <x-popup id="popupIrs" titulo="Salário Líquido" ao-guardar="guardarIrs(event)" botao="Calcular">
+            <div class="irs-bruto" style="margin-top: 16px;">
+                Salário bruto <strong>{{ Moeda::euros($salarioBruto) }}</strong>
+            </div>
+
+            <select class="popup-input" style="margin-top: 16px;" id="irsResidencia" required>
+                @foreach (config('irs.residencias') as $residencia)
+                    <option value="{{ $residencia }}" @selected($irs?->residencia === $residencia)>{{ $residencia }}</option>
+                @endforeach
+            </select>
+
+            @foreach ([
+                'irsEmAtividade' => ['emAtividade', 'Em atividade', null, null],
+                'irsIncapacidade' => ['incapacidade', 'Incapacidade', null, 'irsDeficientesArmadas'],
+                'irsCasado' => ['casado', 'Casado', null, 'irsConjugeEmAtividade'],
+                'irsConjugeEmAtividade' => ['conjugeEmAtividade', 'Cônjuge em atividade', 'irsCasado', null],
+                'irsDeficientesArmadas' => ['deficientesArmadas', 'Deficiente das Forças Armadas', 'irsIncapacidade', null],
+            ] as $campo => [$coluna, $etiqueta, $aLigar, $aDesligar])
+                <label class="interruptor" style="margin-top: 14px;">
+                    <input type="checkbox" id="{{ $campo }}" @checked($irs?->{$coluna})
+                           @if ($aLigar || $aDesligar) onchange="ligacao(this, '{{ $aLigar }}', '{{ $aDesligar }}')" @endif>
+                    <span class="interruptor-calha"></span>
+                    {{ $etiqueta }}
+                </label>
+            @endforeach
+
+            <input class="popup-input" style="margin-top: 16px;" id="irsDependentes" type="text"
+                   inputmode="numeric" placeholder="Número de dependentes" autocomplete="off"
+                   value="{{ $irs?->dependentes }}" oninput="filtrarInteiro(this)" required>
+        </x-popup>
+
         <script>
             let campoAtual = null;
 
@@ -508,6 +599,39 @@
                 document.getElementById("popupValorTitulo").textContent = titulo;
                 document.getElementById("popupInput").value = String(valor).replace(".", ",");
                 abrir("popupValor");
+            }
+
+            function abrirPopupIrs(){
+                document.getElementById("popupIrs").querySelector("form").reset();
+                abrir("popupIrs");
+            }
+
+            function guardarIrs(event){
+                event.preventDefault();
+
+                enviar("{{ route('main.irs') }}", "PATCH", {
+                    residencia: document.getElementById("irsResidencia").value,
+                    emAtividade: document.getElementById("irsEmAtividade").checked,
+                    incapacidade: document.getElementById("irsIncapacidade").checked,
+                    casado: document.getElementById("irsCasado").checked,
+                    conjugeEmAtividade: document.getElementById("irsConjugeEmAtividade").checked,
+                    deficientesArmadas: document.getElementById("irsDeficientesArmadas").checked,
+                    dependentes: Number(document.getElementById("irsDependentes").value || 0),
+                });
+            }
+
+            function ligacao(origem, aLigar, aDesligar){
+                if (origem.checked && aLigar){
+                    document.getElementById(aLigar).checked = true;
+                }
+
+                if (! origem.checked && aDesligar){
+                    document.getElementById(aDesligar).checked = false;
+                }
+            }
+
+            function filtrarInteiro(input){
+                input.value = input.value.replace(/[^0-9]/g, "");
             }
 
             function abrirPopupGanho(){
