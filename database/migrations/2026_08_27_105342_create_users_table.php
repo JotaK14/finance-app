@@ -10,7 +10,6 @@ return new class extends Migration{
             $table->id();
             $table->string('name')->unique();
             $table->string('password');
-            $table->string('phoneNumber', 9)->unique();
             $table->decimal('saldo', 10, 2)->default(0);
             $table->decimal('despesasMensais', 10, 2)->default(0);
             $table->decimal('salarioBruto', 10, 2)->default(0);

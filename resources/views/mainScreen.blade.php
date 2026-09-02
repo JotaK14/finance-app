@@ -472,7 +472,7 @@
                     <th class="numero">Saldo atual</th>
                     <th class="numero" style="display: flex; justify-content: flex-end; gap: 5px;">
                         Saldo no final do mês
-                        <img src="{{ asset('icons/info.svg') }}" width="18" height="18" style="cursor: pointer;" title=" Saldo total + salário - despesas mensais ">
+                        <img src="{{ asset('icons/info.svg') }}" width="18" height="18" style="cursor: pointer;" title=" Saldo total + (Salário Bruto - Despesas Mensais - Segurança Social - IRS)">
                     </th>
                 </tr>
             </thead>

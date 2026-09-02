@@ -13,7 +13,6 @@ class RegisterController extends Controller{
     public function store(Request $request){
         $userInfo = $request->validate([
             'username' => ['required', 'string', 'min:4', 'max:20','alpha_num:ascii','unique:users,name'],
-            'phoneNumber' => ['required', 'digits:9', 'unique:users,phoneNumber'],
             'password' => ['required', 'string', 'min:6', 'confirmed','regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).+$/'],
         ], [
             'username.required' => 'Indique o nome de utilizador.',
@@ -21,9 +20,6 @@ class RegisterController extends Controller{
             'username.max' => 'O nome de utilizador não pode ter mais de 20 caracteres.',
             'username.alpha_num' => 'O nome de utilizador só pode ter letras e números.',
             'username.unique' => 'Já existe uma conta com esse nome de utilizador.',
-            'phoneNumber.required' => 'Indique o número de telemóvel.',
-            'phoneNumber.digits' => 'O número de telemóvel tem de ter 9 dígitos.',
-            'phoneNumber.unique' => 'Já existe uma conta com esse número de telemóvel.',
             'password.required' => 'Indique a palavra-passe.',
             'password.min' => 'A palavra-passe tem de ter pelo menos 6 caracteres.',
             'password.confirmed' => 'As palavras-passe não coincidem.',
@@ -32,7 +28,6 @@ class RegisterController extends Controller{
 
         User::create([
             'name' => $userInfo['username'],
-            'phoneNumber' => $userInfo['phoneNumber'],
             'password' => $userInfo['password'],
         ]);
 

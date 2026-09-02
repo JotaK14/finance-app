@@ -55,7 +55,6 @@
             <div class="title">Registo</div>
 
             <input id="username" name="username" type="text" placeholder="Nome de utilizador" autocomplete="off">
-            <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Número de telemóvel" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off">
             <input id="password" name="password" type="password" placeholder="Palavra-passe" autocomplete="off">
             <input id="confirmPassword" name="password_confirmation" type="password" placeholder="Confirmar Palavra-passe" autocomplete="off">
 
@@ -73,7 +72,6 @@
 
             function limparCampos(){
                 document.getElementById("username").value = "";
-                document.getElementById("phoneNumber").value = "";
                 document.getElementById("password").value = "";
                 document.getElementById("confirmPassword").value = "";
             }
@@ -89,11 +87,10 @@
             async function validarRegisto(event){
                 event.preventDefault();
                 const username = document.getElementById("username").value;
-                const phoneNumber = document.getElementById("phoneNumber").value;
                 const password = document.getElementById("password").value;
                 const password_confirmation = document.getElementById("confirmPassword").value;
 
-                if (username === "" || phoneNumber === "" || password === "" || password_confirmation === ""){
+                if (username === "" || password === "" || password_confirmation === ""){
                     alert("Por favor, preencha todos os campos.");
                     return;
                 }
@@ -125,7 +122,7 @@
                         "Accept": "application/json",
                         "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
                     },
-                    body: JSON.stringify({username, phoneNumber, password, password_confirmation}),
+                    body: JSON.stringify({username, password, password_confirmation}),
                 });
 
                 if (!resposta.ok){
