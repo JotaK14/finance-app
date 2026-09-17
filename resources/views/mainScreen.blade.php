@@ -12,7 +12,12 @@
                 <div class="nome">{{ Auth::user()->name }}</div>
             </div>
 
-            <button class="logout" style="margin-left: auto;" type="button" onclick="window.location.href = '{{ route('login') }}'">
+            <button class="botao-icone" style="margin-left: auto;" type="button" onclick="alternarTodosValores(this)">
+                <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
+                <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
+            </button>
+
+            <button class="logout" type="button" onclick="window.location.href = '{{ route('login') }}'">
                 <img src="{{ asset('icons/logout.svg') }}" width="18" height="18">
             </button>
         </div>
@@ -23,10 +28,6 @@
                     <div class="cartao-titulo">Saldo da conta</div>
 
                     <div class="acoes">
-                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'saldo')">
-                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
-                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
-                        </button>
                         <button class="botao-icone" type="button" @disabled($saldoDefinido)
                                 onclick="abrirPopup('saldo', 'Saldo da conta', {{ $saldo }})"
                                 title="{{ $saldoDefinido ? 'O saldo da conta só pode ser definido uma vez' : 'Editar' }}">
@@ -42,10 +43,6 @@
                     <div class="cartao-titulo">Despesas mensais</div>
 
                     <div class="acoes">
-                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'despesasMensais')">
-                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
-                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
-                        </button>
                         <button class="botao-icone" type="button" onclick="abrirPopup('despesasMensais', 'Despesas mensais', {{ $despesasMensais }})">
                             <img src="{{ asset('icons/pencil.svg') }}" width="18" height="18">
                         </button>
@@ -60,10 +57,6 @@
                     <div class="cartao-titulo">Salário Bruto</div>
 
                     <div class="acoes">
-                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'salarioBruto')">
-                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
-                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
-                        </button>
                         <button class="botao-icone" type="button" onclick="abrirPopup('salarioBruto', 'Salário Bruto', {{ $salarioBruto }})">
                             <img src="{{ asset('icons/pencil.svg') }}" width="18" height="18">
                         </button>
@@ -78,10 +71,6 @@
                     <div class="cartao-titulo">Salário Líquido</div>
 
                     <div class="acoes">
-                        <button class="botao-icone" type="button" onclick="alternarValor(this, 'salarioLiquido')">
-                            <img class="icone-visivel" src="{{ asset('icons/eye-on.svg') }}" width="18" height="18">
-                            <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
-                        </button>
                         <button class="botao-icone" type="button" @disabled($salarioBruto <= 0)
                                 onclick="abrirPopupIrs()"
                                 title="{{ $salarioBruto <= 0 }}">

@@ -177,11 +177,14 @@
         });
     }
 
-    function alternarValor(botao, id){
-        const elemento = document.getElementById(id);
-        const estavaEscondido = elemento.textContent === "******";
+    function alternarTodosValores(botao){
+        const ids = ["saldo", "despesasMensais", "salarioBruto", "salarioLiquido"];
+        const estavaEscondido = document.getElementById(ids[0]).textContent === "******";
 
-        elemento.textContent = estavaEscondido ? elemento.dataset.valor : "******";
+        ids.forEach((id) => {
+            const elemento = document.getElementById(id);
+            elemento.textContent = estavaEscondido ? elemento.dataset.valor : "******";
+        });
 
         botao.querySelector(".icone-visivel").hidden = !estavaEscondido;
         botao.querySelector(".icone-escondido").hidden = estavaEscondido;
