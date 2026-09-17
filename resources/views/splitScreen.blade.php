@@ -10,10 +10,6 @@
             Aplicação de apoio financeiro
         </div>
 
-        <script>
-            setTimeout(() =>{
-                window.location.href = "{{ route('login') }}";
-            }, 3000);
-        </script>
+        <script src="{{ asset('js/split.js') }}"></script>
     </body>
 </html>

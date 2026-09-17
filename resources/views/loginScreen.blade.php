@@ -18,59 +18,6 @@
             </div>
         </form>
 
-        <script>
-            function goToRegister(){
-                limparCampos()
-                window.location.href = "{{ route('register') }}";
-            }
-
-            function goToMain(){
-                limparCampos()
-                window.location.href = "{{ route('main') }}";
-            }
-
-            function limparCampos(){
-                document.getElementById("username").value = "";
-                document.getElementById("password").value = "";
-            }
-
-            function mensagemDeErro(dados){
-                if (dados.errors){
-                    return Object.values(dados.errors).flat().join("\n");
-                }
-
-                return dados.message ?? "Ocorreu um erro inesperado.";
-            }
-
-            async function validarLogin(event){
-                event.preventDefault();
-                const username = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-
-                if (username === "" || password === ""){
-                    alert("Por favor, preencha todos os campos.");
-                    return;
-                }
-
-                const resposta = await fetch("{{ route('login.store') }}",{
-                    method: "POST",
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
-
-                if (!resposta.ok){
-                    const dados = await resposta.json();
-                    alert(mensagemDeErro(dados));
-                    limparCampos();
-                    return;
-                }
-
-                goToMain();
-            }
-        </script>
+        <script src="{{ asset('js/login.js') }}"></script>
     </body>
 </html>
