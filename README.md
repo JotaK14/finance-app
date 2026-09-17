@@ -5,12 +5,17 @@ bruto/líquido (com cálculo automático de IRS), ganhos e despesas mensais.
 
 ## Funcionalidades
 
-- Registo e autenticação de utilizadores
-- Definição do saldo inicial da conta (definido uma única vez)
-- Cálculo de salário líquido a partir do salário bruto, com base nas variáveis do IRS
-  (residência, situação conjugal, dependentes, incapacidade, etc.)
-- Registo de ganhos e despesas, com atualização automática do saldo
-- Histórico de movimentos com saldo em cada momento
+- Split screen inicial que redireciona automaticamente para o login, e registo/autenticação de utilizadores
+- Definição do saldo inicial da conta (só pode ser definido uma vez)
+- Edição, a qualquer momento, das despesas mensais e do salário bruto
+- Cálculo automático do salário líquido a partir do salário bruto, com base nas variáveis do IRS
+  (residência, situação conjugal, dependentes, incapacidade, etc.) — recalculado sempre que o
+  salário bruto muda
+- Registo de ganhos e despesas por categoria (Alimentação, Transporte, Habitação, Lazer),
+  com atualização automática do saldo
+- Edição e remoção de movimentos já registados, com recálculo automático do saldo
+- Histórico de movimentos com saldo em cada momento e previsão do saldo no final do mês
+- Botão para ocultar/mostrar todos os valores monetários apresentados no ecrã
 
 ## Stack
 
