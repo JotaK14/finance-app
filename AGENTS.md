@@ -1,47 +1,26 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# Finance App — guia para agentes
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Aplicação Laravel de gestão financeira pessoal. Ver README.md para instalação e execução.
 
-## Prerequisites
+## Domínio
 
-Verify that PHP and Composer are available:
+- `User`: dono dos dados, tem `saldo`, `despesasMensais`, `salarioBruto`, `salarioLiquido`.
+  `saldoDefinido` marca que o saldo inicial já foi definido (só pode acontecer uma vez).
+- `Movimento`: ganho ou despesa (`tipo`, `descricao`, `valor`). Despesas guardam `valor` negativo.
+  Tipos de despesa e classes CSS associadas estão em `config/movimentos.php`.
+- `Irs`: dados usados para calcular o salário líquido a partir do bruto (residência, situação
+  conjugal, dependentes, incapacidade). Regras de residência disponíveis em `config/irs.php`
+  (atualmente só "Continente" está implementado).
+- `App\Support\CalculadoraIrs`: calcula o `salarioLiquido` a partir de `Irs` + salário bruto.
+  É a única fonte de verdade para as tabelas de retenção — não recriar essa lógica noutro sítio.
 
-```sh
-php -v
-composer -V
-```
+## Convenções
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
-
-macOS:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
-
-Windows PowerShell:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
-
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+- Nomes de variáveis, métodos, rotas e chaves de configuração em português
+  (`salarioBruto`, `guardarGanho`, `atualizarValores`) — manter consistência com o existente.
+- Sem suite de testes automatizados neste projeto (decisão deliberada, não adicionar
+  PHPUnit/Pest a não ser que peçam explicitamente).
+- Alterar `salarioBruto` invalida o `Irs` guardado (ver `MainController::limparIrs`) — ter isto
+  em conta ao mexer nesse fluxo.
+- Middleware `terminar.sessao` (`app/Http/Middleware/TerminarSessao.php`) impede utilizadores
+  autenticados de voltar a ver login/registo/splash.
