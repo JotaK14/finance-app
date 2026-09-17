@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movimento;
 use App\Models\User;
 use App\Support\CalculadoraIrs;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class MainController extends Controller{
                 $saldo -= $movimento->valor;
 
                 return [
+                    'id' => $movimento->id,
                     'data' => $movimento->created_at->format('d/m'),
                     'descricao' => $movimento->descricao,
                     'tipo' => $movimento->tipo,
@@ -114,6 +116,45 @@ class MainController extends Controller{
             'tipo' => $dados['tipo'],
             'valor' => -$dados['valor'],
         ]);
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function atualizarMovimento(Request $request, Movimento $movimento){
+        abort_if($movimento->user_id !== Auth::id(), 403);
+
+        $dados = $request->validate([
+            'descricao' => ['required', 'string', 'max:255'],
+            'valor' => ['required', 'numeric', 'min:0.01', 'max:99999999.99'],
+        ], [
+            'descricao.required' => 'Escreva uma descrição.',
+            'valor.numeric' => 'O valor tem de ser um número.',
+            'valor.min' => 'O valor tem de ser maior do que zero.',
+            'valor.max' => 'O valor é demasiado alto.',
+        ]);
+
+        $valor = $movimento->tipo === config('movimentos.tipoGanho') ? $dados['valor'] : -$dados['valor'];
+        $diferenca = $valor - (float) $movimento->valor;
+
+        DB::transaction(function () use ($movimento, $dados, $valor, $diferenca) {
+            $movimento->update([
+                'descricao' => $dados['descricao'],
+                'valor' => $valor,
+            ]);
+
+            Auth::user()->increment('saldo', $diferenca);
+        });
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function apagarMovimento(Movimento $movimento){
+        abort_if($movimento->user_id !== Auth::id(), 403);
+
+        DB::transaction(function () use ($movimento) {
+            Auth::user()->decrement('saldo', $movimento->valor);
+            $movimento->delete();
+        });
 
         return response()->json(['ok' => true]);
     }

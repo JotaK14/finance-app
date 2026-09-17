@@ -1,4 +1,5 @@
 @use('App\Support\Moeda')
+@use('Illuminate\Support\Js')
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
 <html>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -474,6 +475,7 @@
                         Saldo no final do mês
                         <img src="{{ asset('icons/info.svg') }}" width="18" height="18" style="cursor: pointer;" title=" Saldo total + (Salário Bruto - Despesas Mensais - Segurança Social - IRS)">
                     </th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -490,10 +492,20 @@
                         </td>
                         <td class="numero">{{ Moeda::euros($movimento['saldoAtual']) }}</td>
                         <td class="saldo-pos">{{ Moeda::euros($movimento['saldoPos']) }}</td>
+                        <td style="display: flex; gap: 6px; justify-content: flex-end;">
+                            <button class="botao-icone" style="width: 30px; height: 30px;" type="button"
+                                onclick="abrirPopupEditarMovimento({{ $movimento['id'] }}, {{ Js::from($movimento['descricao']) }}, {{ abs($movimento['valor']) }})">
+                                <img src="{{ asset('icons/pencil.svg') }}" width="14" height="14">
+                            </button>
+                            <button class="botao-icone" style="width: 30px; height: 30px;" type="button"
+                                onclick="confirmarApagarMovimento({{ $movimento['id'] }})">
+                                <img src="{{ asset('icons/trash.svg') }}" width="14" height="14">
+                            </button>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="vazio" colspan="6">Ainda não existem movimentos registados.</td>
+                        <td class="vazio" colspan="7">Ainda não existem movimentos registados.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -533,6 +545,24 @@
             <input class="popup-input" style="margin-top: 16px;" id="despesaValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required autocomplete="off">
         </x-popup>
 
+        <x-popup id="popupEditarMovimento" titulo="Editar movimento" ao-guardar="guardarEdicaoMovimento(event)" botao="Guardar">
+            <input class="popup-input" style="margin-top: 16px;" id="editarMovimentoDescricao" type="text" maxlength="255" placeholder="Descrição" required autocomplete="off">
+            <input class="popup-input" style="margin-top: 16px;" id="editarMovimentoValor" type="text" inputmode="decimal" oninput="filtrarValor(this)" placeholder="Valor" required autocomplete="off">
+        </x-popup>
+
+        <dialog id="popupConfirmarApagarMovimento">
+            <div class="popup-titulo">Apagar movimento</div>
+
+            <div class="popup-texto" style="margin-top: 14px;">
+                Tem a certeza que quer apagar este movimento? Esta ação não pode ser desfeita.
+            </div>
+
+            <div class="popup-botoes" style="margin-top: 20px;">
+                <button type="button" onclick="fechar('popupConfirmarApagarMovimento')">Cancelar</button>
+                <button type="button" onclick="apagarMovimentoConfirmado()">Apagar</button>
+            </div>
+        </dialog>
+
         <x-popup id="popupIrs" titulo="Salário Líquido" ao-guardar="guardarIrs(event)" botao="Calcular">
             <div class="irs-bruto" style="margin-top: 16px;">
                 Salário bruto <strong>{{ Moeda::euros($salarioBruto) }}</strong>
@@ -566,6 +596,8 @@
 
         <script>
             let campoAtual = null;
+            let movimentoEditando = null;
+            let movimentoApagando = null;
 
             function abrir(id){
                 document.getElementById(id).showModal();
@@ -664,6 +696,33 @@
                     descricao: document.getElementById("despesaDescricao").value,
                     valor: document.getElementById("despesaValor").value.replace(",", "."),
                 });
+            }
+
+            function abrirPopupEditarMovimento(id, descricao, valor){
+                movimentoEditando = id;
+                document.getElementById("editarMovimentoDescricao").value = descricao;
+                document.getElementById("editarMovimentoValor").value = String(valor).replace(".", ",");
+                abrir("popupEditarMovimento");
+            }
+
+            function guardarEdicaoMovimento(event){
+                event.preventDefault();
+
+                enviar(`/main/movimentos/${movimentoEditando}`, "PATCH", {
+                    descricao: document.getElementById("editarMovimentoDescricao").value,
+                    valor: document.getElementById("editarMovimentoValor").value.replace(",", "."),
+                });
+            }
+
+            function confirmarApagarMovimento(id){
+                movimentoApagando = id;
+                abrir("popupConfirmarApagarMovimento");
+            }
+
+            function apagarMovimentoConfirmado(){
+                fechar("popupConfirmarApagarMovimento");
+
+                enviar(`/main/movimentos/${movimentoApagando}`, "DELETE", {});
             }
 
             function filtrarValor(input){
