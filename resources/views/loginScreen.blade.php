@@ -1,53 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
 <html>
-    <style>
-        body{
-            background-color: var(--preto);
-            color: var(--branco);
-            font-family: Roboto, sans-serif;
-        }
-
-        input{
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 300px;
-        }
-
-        button{
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 120px;
-            background-color: var(--branco);
-            color: var(--preto);
-            font-weight: 400;
-            cursor: pointer;
-        }
-
-        .login{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .title{
-            font-size: 67px;
-            font-weight: 600;
-            letter-spacing: 5px;
-            margin: 10px;
-        }
-
-        .buttons{
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            width: 300px;
-        }
-
-    </style>
     <body>
         <form class="login" style="margin-top: 15%;" method="POST" action="{{ route('login.store') }}" onsubmit="validarLogin(event)">
             @csrf

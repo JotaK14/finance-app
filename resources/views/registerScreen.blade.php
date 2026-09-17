@@ -1,53 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/register.css') }}">
 <html>
-    <style>
-        body{
-            background-color: var(--preto);
-            color: var(--branco);
-            font-family: Roboto, sans-serif;
-        }
-
-        input{
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 300px;
-        }
-
-        button{
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 120px;
-            background-color: var(--branco);
-            color: var(--preto);
-            font-weight: 400;
-            cursor: pointer;
-        }
-
-        .register{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .title{
-            font-size: 67px;
-            font-weight: 600;
-            letter-spacing: 5px;
-            margin: 10px;
-        }
-
-        .buttons{
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            width: 300px;
-        }
-
-    </style>
     <body>
         <form class="register" style="margin-top: 12%;" method="POST" action="{{ route('register.store') }}" onsubmit="validarRegisto(event)">
             @csrf
