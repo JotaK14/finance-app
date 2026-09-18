@@ -20,6 +20,12 @@ class PasswordController extends Controller{
 
         $status = Password::sendResetLink($dados);
 
+        if ($status === Password::RESET_THROTTLED) {
+            return response()->json([
+                'message' => 'Já pediu um link há pouco. Aguarde um minuto antes de tentar novamente.',
+            ], 422);
+        }
+
         if ($status !== Password::RESET_LINK_SENT) {
             return response()->json([
                 'message' => 'Não existe nenhuma conta com esse email.',
