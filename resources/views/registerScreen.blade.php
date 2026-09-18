@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 <html>
     <body>
@@ -18,6 +19,9 @@
             </div>
         </form>
 
+        @include('components.loading-overlay')
+
+        <script src="{{ asset('js/loading.js') }}"></script>
         <script src="{{ asset('js/register.js') }}"></script>
     </body>
 </html>

@@ -1,6 +1,7 @@
 @use('App\Support\Moeda')
 @use('Illuminate\Support\Js')
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 <html>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -227,6 +228,9 @@
                    value="{{ $irs?->dependentes }}" oninput="filtrarInteiro(this)" required>
         </x-popup>
 
+        @include('components.loading-overlay')
+
+        <script src="{{ asset('js/loading.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
     </body>
 </html>

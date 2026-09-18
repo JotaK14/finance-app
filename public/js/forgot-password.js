@@ -19,6 +19,8 @@
             return;
         }
 
+        mostrarCarregamento();
+
         const resposta = await fetch("/esqueci-a-password",{
             method: "POST",
             headers:{
@@ -28,6 +30,8 @@
             },
             body: JSON.stringify({ email }),
         });
+
+        esconderCarregamento();
 
         if (!resposta.ok){
             const dados = await resposta.json();

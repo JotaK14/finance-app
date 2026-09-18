@@ -11,6 +11,8 @@
     }
 
     async function enviar(url, metodo, corpo){
+        mostrarCarregamento();
+
         const resposta = await fetch(url, {
             method: metodo,
             headers:{
@@ -22,6 +24,7 @@
         });
 
         if (!resposta.ok){
+            esconderCarregamento();
             alert(mensagemDeErro(await resposta.json()));
             return;
         }

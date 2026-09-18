@@ -54,6 +54,8 @@
             return;
         }
 
+        mostrarCarregamento();
+
         const resposta = await fetch("/register",{
             method: "POST",
             headers:{
@@ -63,6 +65,8 @@
             },
             body: JSON.stringify({username, email, password, password_confirmation}),
         });
+
+        esconderCarregamento();
 
         if (!resposta.ok){
             const dados = await resposta.json();

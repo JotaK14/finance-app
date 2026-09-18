@@ -1,0 +1,27 @@
+.overlay-carregamento{
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.overlay-carregamento.ativo{
+    display: flex;
+}
+
+.spinner-carregamento{
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--branco);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: rodar 0.7s linear infinite;
+}
+
+@keyframes rodar{
+    to{ transform: rotate(360deg); }
+}

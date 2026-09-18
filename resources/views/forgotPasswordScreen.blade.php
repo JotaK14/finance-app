@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 <link rel="stylesheet" href="{{ asset('css/forgot-password.css') }}">
 <html>
     <body>
@@ -21,6 +22,9 @@
             </div>
         </form>
 
+        @include('components.loading-overlay')
+
+        <script src="{{ asset('js/loading.js') }}"></script>
         <script src="{{ asset('js/forgot-password.js') }}"></script>
     </body>
 </html>

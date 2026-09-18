@@ -34,6 +34,8 @@
             return;
         }
 
+        mostrarCarregamento();
+
         const resposta = await fetch("/redefinir-password",{
             method: "POST",
             headers:{
@@ -43,6 +45,8 @@
             },
             body: JSON.stringify({ token, email, password, password_confirmation }),
         });
+
+        esconderCarregamento();
 
         if (!resposta.ok){
             const dados = await resposta.json();
