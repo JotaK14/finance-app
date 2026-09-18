@@ -18,7 +18,7 @@
                 <img class="icone-escondido" src="{{ asset('icons/eye-off.svg') }}" width="18" height="18" hidden>
             </button>
 
-            <button class="logout" type="button" onclick="window.location.href = '{{ route('login') }}'">
+            <button class="logout" type="button" onclick="mostrarCarregamento(); window.location.href = '{{ route('login') }}'">
                 <img src="{{ asset('icons/logout.svg') }}" width="18" height="18">
             </button>
         </div>

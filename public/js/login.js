@@ -1,9 +1,11 @@
     function goToRegister(){
+        mostrarCarregamento();
         limparCampos()
         window.location.href = "/register";
     }
 
     function goToMain(){
+        mostrarCarregamento();
         limparCampos()
         window.location.href = "/main";
     }

@@ -1,4 +1,5 @@
     function goToLogin(){
+        mostrarCarregamento();
         limparCampos()
         window.location.href = "/login";
     }
