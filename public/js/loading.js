@@ -1,7 +1,7 @@
     function mostrarCarregamento(){
-        document.getElementById("overlayCarregamento").classList.add("ativo");
+        document.getElementById("overlayCarregamento").showModal();
     }
 
     function esconderCarregamento(){
-        document.getElementById("overlayCarregamento").classList.remove("ativo");
+        document.getElementById("overlayCarregamento").close();
     }

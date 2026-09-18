@@ -1,16 +1,21 @@
 .overlay-carregamento{
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
-    background-color: rgba(0, 0, 0, 0.35);
 }
 
-.overlay-carregamento.ativo{
+.overlay-carregamento[open]{
     display: flex;
+}
+
+.overlay-carregamento::backdrop{
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.35);
 }
 
 .spinner-carregamento{
