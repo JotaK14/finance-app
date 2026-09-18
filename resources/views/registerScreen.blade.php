@@ -8,6 +8,7 @@
             <div class="title">Registo</div>
 
             <input id="username" name="username" type="text" placeholder="Nome de utilizador" autocomplete="off">
+            <input id="email" name="email" type="email" placeholder="Email" autocomplete="off">
             <input id="password" name="password" type="password" placeholder="Palavra-passe" autocomplete="off">
             <input id="confirmPassword" name="password_confirmation" type="password" placeholder="Confirmar Palavra-passe" autocomplete="off">
 

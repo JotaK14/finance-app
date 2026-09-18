@@ -16,6 +16,8 @@
                 <button type="submit">Entrar</button>
                 <button type="button" onclick="goToRegister()">Registar</button>
             </div>
+
+            <a class="link" href="{{ route('password.request') }}">Esqueceu-se da password?</a>
         </form>
 
         <script src="{{ asset('js/login.js') }}"></script>

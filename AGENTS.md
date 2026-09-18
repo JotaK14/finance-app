@@ -6,6 +6,7 @@ Aplicação Laravel de gestão financeira pessoal. Ver README.md para instalaç�
 
 - `User`: dono dos dados, tem `saldo`, `despesasMensais`, `salarioBruto`, `salarioLiquido`.
   `saldoDefinido` marca que o saldo inicial já foi definido (só pode acontecer uma vez).
+  Login é feito por `name`, não por `email` — o `email` existe só para recuperação de password.
 - `Movimento`: ganho ou despesa (`tipo`, `descricao`, `valor`). Despesas guardam `valor` negativo.
   Tipos de despesa e classes CSS associadas estão em `config/movimentos.php`.
 - `Irs`: dados usados para calcular o salário líquido a partir do bruto (residência, situação
@@ -24,3 +25,5 @@ Aplicação Laravel de gestão financeira pessoal. Ver README.md para instalaç�
   em conta ao mexer nesse fluxo.
 - Middleware `terminar.sessao` (`app/Http/Middleware/TerminarSessao.php`) impede utilizadores
   autenticados de voltar a ver login/registo/splash.
+- CSS e JS vivem diretamente em `public/css`/`public/js` (um ficheiro por página), servidos como
+  estáticos via `asset()` — não em `resources/`, o pipeline Vite/Tailwind não está em uso.

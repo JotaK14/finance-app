@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable{
     use Notifiable;
 
-    protected $fillable = ['name', 'password', 'salarioLiquido'];
+    protected $fillable = ['name', 'email', 'password', 'salarioLiquido'];
     protected $hidden = ['password'];
 
     public function irs(): HasOne{
